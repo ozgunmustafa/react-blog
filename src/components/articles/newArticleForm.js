@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { api } from "../../api"
+import { api } from "../../api";
 import { Link, withRouter } from "react-router-dom";
 const INITIAL_ARTICLE = {
   title: "",
   content: "",
 };
 const NewArticleForm = (props) => {
-  const id=props.match.params.id;
+  console.log(props)
+  const id = props.match.params.id;
   const [article, setArticle] = useState(INITIAL_ARTICLE);
   const [error, setError] = useState("");
 
@@ -17,34 +18,30 @@ const NewArticleForm = (props) => {
     event.preventDefault();
     setError("");
 
-    if(props.article.title){
+    if (props.article?.title) {
       api()
-      .put(`/posts/${id}`,article)
-      .then((response)=>{
-        console.log(response)
-        props.history.push(`/post/${id}`);
-      }).catch(err=>setError("Başlık ve içerik kısmı doldurulmalıdır."));
+        .put(`/posts/${id}`, article)
+        .then((response) => {
+          props.history.push(`/post/${id}`);
+        })
+        .catch((err) => setError("Başlık ve içerik kısmı doldurulmalıdır."));
+    } else {
+      api()
+        .post("/posts", article)
+        .then((response) => {
+          props.history.push("/");
+        })
+        .catch((err) => {
+          setError("Başlık ve içerik kısmı doldurulmalıdır.");
+        });
     }
-    else{
-          api()
-      .post("/posts", article)
-      .then((response) => {
-        props.history.push("/");
-      })
-      .catch((err) => {
-        setError("Başlık ve içerik kısmı doldurulmalıdır.");
-      });
-    }
-
-
   };
-  useEffect(()=>{
-    if(props.article.title && props.article.content) setArticle(props.article)
-
-  },[props.article])
+  useEffect(() => {
+    if (props.article?.title && props.article?.content) setArticle(props.article);
+  }, [props.article]);
   return (
     <div className="container ui form softBorder">
-      <h1>{article.content? "Düzenle":"Yeni Yazı Oluştur"}</h1>
+      <h1>{article.content ? "Düzenle" : "Yeni Yazı Oluştur"}</h1>
       {error && (
         <div className="ui icon message">
           <div className="content">
