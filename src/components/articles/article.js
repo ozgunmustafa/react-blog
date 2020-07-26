@@ -10,6 +10,7 @@ import Tag from "../tag";
         src="https://images.unsplash.com/photo-1471897488648-5eae4ac6686b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
       />
       <div className="article-content">
+      <h1>sdasdasdasdas</h1>
         <h2>{props.article.title}</h2>
         <p>
         {props.article.content}

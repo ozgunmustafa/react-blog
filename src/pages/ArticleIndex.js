@@ -1,41 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { api } from "../api"
+import React, { useEffect } from "react";
 import ArticleComments from "../components/articles/articleComments";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 import RemoveModal from "../components/articles/removeModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getArticle, createComment } from "../actions";
 
-const ArticleIndex = (props) => {
-  const { id } = props.match.params;
-  const [articleDetails, setArticleDetails] = useState({});
-  const [articleComments, setArticleComments] = useState([]);
+const ArticleIndex = () => {
+  const articleDetails=useSelector(state=>state.articleDetails)
+  const dispatch = useDispatch()
+
+  const { id } = useParams();
+
 
   const handleCommentSubmit = (event, comment) => {
     event.preventDefault();
-    api()
-      .post(
-        `/posts/${id}/comments`,
-        comment
-      )
-      .then((response) => {
-        setArticleComments([...articleComments, response.data]);
-      })
-      .catch((error) => console.error("Hata Oluştu"));
+    dispatch(createComment(id,comment))
+   
   };
 
   useEffect(() => {
-    axios
-      .all([
-        api().get(`/posts/${id}`),
-        api().get(
-          `/posts/${id}/comments`
-        ),
-      ])
-      .then((response) => {
-        setArticleDetails(response[0].data);
-        setArticleComments(response[1].data);
-      })
-      .catch((error) => console.error(error));
+    dispatch(getArticle(id))
   }, []);
 
   return (
@@ -43,10 +27,10 @@ const ArticleIndex = (props) => {
       <h1 className="title">{articleDetails.title}</h1>
 
       <div className="ui icon  buttons ">
-        <Link to={`/post/${articleDetails.id}/edit`} className="ui blue button">
+        <Link to={`/post/${articleDetails.id}/edit`} className="ui  button">
           <i className="edit icon"></i>Düzenle
         </Link>
-        <RemoveModal article={articleDetails} push={props.history.push}></RemoveModal>
+        <RemoveModal article={articleDetails} ></RemoveModal>
 
         {/* <button className="ui red button">
           <i className="trash icon"></i>Sil
@@ -95,7 +79,7 @@ const ArticleIndex = (props) => {
       <p className="content">{articleDetails.content}</p>
 
       <ArticleComments
-        yorumlar={articleComments}
+        comments={articleDetails.articleComments}
         handleCommentSubmit={handleCommentSubmit}
       ></ArticleComments>
     </article>

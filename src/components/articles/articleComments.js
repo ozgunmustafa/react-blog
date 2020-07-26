@@ -5,7 +5,7 @@ import CommentForm from './commentForm';
  const articleCommnets=(props)=> {
     return (
        <React.Fragment>
-          <CommentList yorumlar={props.yorumlar}/>
+          <CommentList comments={props.comments}/>
           <CommentForm handleCommentSubmit={props.handleCommentSubmit}/>
        </React.Fragment>
     )

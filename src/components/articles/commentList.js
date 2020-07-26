@@ -5,7 +5,7 @@ const commentList = (props) => {
   return (
     <div>
       <h3>Yorumlar</h3>
-      {props.yorumlar.map((comment) => {
+      {props.comments.map((comment) => {
         return <Comments detail={comment} key={comment.id} />;
       })}
     </div>

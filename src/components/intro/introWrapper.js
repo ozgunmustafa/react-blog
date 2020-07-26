@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
-import Intro from "./intro";
-import axios from "axios";
+import React, {  useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getArticleList } from "../../actions";
 
 function IntroWrapper() {
-  const [articleList, setArticleList] = useState([]);
+  const articleList = useSelector((state) => state.articleList);
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    axios
-      .get("https://react-yazi-yorum.herokuapp.com/posts")
-      .then((response) => {
-        setArticleList(response.data);
-      });
+    dispatch(getArticleList());
   }, []);
   return (
     <div className="intro-wrapper">
@@ -24,7 +21,6 @@ function IntroWrapper() {
               <div className="bg-gradient">
                 <span className="badge">Haber</span>
                 <h2 className="title">{article.title}</h2>
-                <p className="detail">{article.created_at}</p>
               </div>
             </div>
         );

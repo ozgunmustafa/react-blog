@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { api } from "../../api";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, useParams, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { editArticle } from "../../actions";
 const INITIAL_ARTICLE = {
   title: "",
   content: "",
 };
 const NewArticleForm = (props) => {
-  console.log(props)
-  const id = props.match.params.id;
+  const { id } = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [article, setArticle] = useState(INITIAL_ARTICLE);
   const [error, setError] = useState("");
 
@@ -19,17 +22,12 @@ const NewArticleForm = (props) => {
     setError("");
 
     if (props.article?.title) {
-      api()
-        .put(`/posts/${id}`, article)
-        .then((response) => {
-          props.history.push(`/post/${id}`);
-        })
-        .catch((err) => setError("Başlık ve içerik kısmı doldurulmalıdır."));
+      dispatch(editArticle(id, article, history.push));
     } else {
       api()
         .post("/posts", article)
         .then((response) => {
-          props.history.push("/");
+          history.push("/");
         })
         .catch((err) => {
           setError("Başlık ve içerik kısmı doldurulmalıdır.");
@@ -37,7 +35,8 @@ const NewArticleForm = (props) => {
     }
   };
   useEffect(() => {
-    if (props.article?.title && props.article?.content) setArticle(props.article);
+    if (props.article?.title && props.article?.content)
+      setArticle({ title: props.article.title, content: props.article.content });
   }, [props.article]);
   return (
     <div className="container ui form softBorder">
@@ -85,4 +84,4 @@ const NewArticleForm = (props) => {
     </div>
   );
 };
-export default withRouter(NewArticleForm);
+export default NewArticleForm;

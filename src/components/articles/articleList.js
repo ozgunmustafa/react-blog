@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { api } from "../../api"
-import {Link} from "react-router-dom"
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getArticleList } from "../../actions";
 
 function ArticleList() {
-  const [articleList, setArticleList] = useState([]);
+  const articleList = useSelector((state) => state.articleList);
+  const dispatch = useDispatch();
+  console.log(dispatch)
 
   useEffect(() => {
-    api()
-      .get("/posts")
-      .then((response) => {
-        setArticleList(response.data);
-      });
+
+    dispatch(getArticleList());
   }, []);
 
   return (
@@ -18,8 +18,11 @@ function ArticleList() {
       <div className="articleWrapper">
         {articleList.map((article) => {
           return (
-              
-            <Link to={`/post/${article.id}`} className="article undernone" key={article.id}>
+            <Link
+              to={`/post/${article.id}`}
+              className="article undernone"
+              key={article.id}
+            >
               <img
                 className="article-image"
                 alt=""
@@ -27,10 +30,8 @@ function ArticleList() {
               />
               <div className="article-content">
                 <h2>{article.title}</h2>
-                <p>{article.content.substring(0, 200)}</p>
-                <div className="article-tags">
-                
-                </div>
+                <p>{article.content}</p>
+                <div className="article-tags"></div>
               </div>
             </Link>
           );

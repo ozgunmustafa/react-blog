@@ -1,29 +1,27 @@
 import React, { useState } from "react";
 import { Button, Modal, Header, Icon } from "semantic-ui-react";
-import { api } from "../../api";
-const RemoveModal = ({ article, push }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { removeArticle } from "../../actions";
+import { useHistory } from "react-router-dom";
+const RemoveModal = ({ article }) => {
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState("");
+  const error = useSelector((state) => state.error);
   const show = () => setOpen(true);
   const close = () => setOpen(false);
 
-  const handleDelete=(id)=>{
-      api().delete(`/posts/${id}`)
-      .then(response=>{
-          setError("");
-          close();
-          push('/');
-      })
-      .catch(()=>setError("hata oluştu"))
+  const { push } = useHistory();
+  const dispatch = useDispatch();
 
-  }
+  const handleDelete = (id) => {
+    dispatch(removeArticle(id, close, push));
+  };
 
   return (
     <React.Fragment>
       <Modal
         trigger={
-          <Button color="red" onClick={show}>
-            Sil
+          <Button onClick={show}>
+            <i class="trash icon"></i>Sil
           </Button>
         }
         basic
@@ -33,14 +31,24 @@ const RemoveModal = ({ article, push }) => {
       >
         <Header icon="archive" content="Emin misiniz?" />
         <Modal.Content>
-         
-          {error ? <p>Hata Oluştu.</p>: <p><b>{article.title}</b> başlıklı yazıyı silmek istediğinizden emin misiniz?.</p>}
+          {error ? (
+            <p>Hata Oluştu.</p>
+          ) : (
+            <p>
+              <b>{article.title}</b> başlıklı yazıyı silmek istediğinizden emin
+              misiniz?.
+            </p>
+          )}
         </Modal.Content>
         <Modal.Actions>
-          <Button basic color="red" inverted onClick={close}>
+          <Button color="red" inverted onClick={close}>
             <Icon name="remove" /> Vazgeç
           </Button>
-          <Button color="green" onClick={()=>handleDelete(article.id)} inverted>
+          <Button
+            color="green"
+            onClick={() => handleDelete(article.id)}
+            inverted
+          >
             <Icon name="checkmark" /> Sil
           </Button>
         </Modal.Actions>
