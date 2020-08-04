@@ -15,7 +15,6 @@ const ArticleIndex = () => {
   const handleCommentSubmit = (event, comment) => {
     event.preventDefault();
     dispatch(createComment(id,comment))
-   
   };
 
   useEffect(() => {

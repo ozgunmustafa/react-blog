@@ -29,7 +29,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
     case GET_ARTICLE_LIST:
       return { ...state, articleList: action.payload, error: "" };
     case GET_ARTICLE_LIST_ERROR:
-      return { ...state, articleList: action.payload };
+      return { ...state, error: action.payload };
     case GET_ARTICLE:
       return { ...state, articleDetails: action.payload, error: "" };
     case GET_ARTICLE_ERROR:

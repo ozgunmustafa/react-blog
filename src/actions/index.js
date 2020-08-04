@@ -20,7 +20,7 @@ export const getArticleList = () => (dispatch) => {
     })
     .catch(() => {
       dispatch({
-        type: GET_ARTICLE_LIST,
+        type: GET_ARTICLE_LIST_ERROR,
         payload: "Yazılar Yüklenirken Hata Oluştu",
       });
     });

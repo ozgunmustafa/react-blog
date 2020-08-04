@@ -1,26 +1,27 @@
 import React from "react";
-import logo from "../../logo.png";
+import "./header.css";
 import { Link, NavLink } from "react-router-dom";
-import { Menu } from "semantic-ui-react";
 
 function header() {
   return (
-    <Menu stackable>
-      <Menu.Item>
-        <img src={logo} className="logo" alt="" />
-      </Menu.Item>
-
-      <Menu.Item name="features">
-        <NavLink to="/">Anasayfa</NavLink> 
-      </Menu.Item>
-
-      <Menu.Item name="features">
-        <NavLink to="/createArticle">Yeni Yazı </NavLink> 
-      </Menu.Item>
-
-
-
-    </Menu>
+   	<header>
+		<div id="nav-head">
+			<div id="logo">ReactBlog</div>
+			<label for="menu-toggle">
+					<div class="toggle-icon">
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</label>
+		</div>
+		<input type="checkbox" id="menu-toggle"/>
+		<ul class="nav-links">
+			<li>  <NavLink to="/">Anasayfa</NavLink> </li>
+			<li> <NavLink to="/createArticle">Yeni Yazı </NavLink> </li>
+		
+		</ul>
+	</header>
   );
 }
 

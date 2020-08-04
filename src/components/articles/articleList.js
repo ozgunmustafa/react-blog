@@ -6,10 +6,8 @@ import { getArticleList } from "../../actions";
 function ArticleList() {
   const articleList = useSelector((state) => state.articleList);
   const dispatch = useDispatch();
-  console.log(dispatch)
 
   useEffect(() => {
-
     dispatch(getArticleList());
   }, []);
 
@@ -30,7 +28,7 @@ function ArticleList() {
               />
               <div className="article-content">
                 <h2>{article.title}</h2>
-                <p>{article.content}</p>
+                <p>{article.content.substr(0, 150)}</p>
                 <div className="article-tags"></div>
               </div>
             </Link>
